@@ -1,25 +1,10 @@
 declare module 'redux-rsaa-middleware' {
-  declare type DispatchAPI<A> = (action: A) => A;
-  
-  declare type Dispatch<A: { type: $Subtype<string> }> = DispatchAPI<A>;
+  import type { Middleware } from 'redux';
 
-  declare type MiddlewareAPI<S, A, D = Dispatch<A>> = {
-    dispatch: D;
-    getState(): S;
-  };
-
-  declare type Middleware<S, A, D = Dispatch<A>> =
-    (api: MiddlewareAPI<S, A, D>) =>
-      (next: D) => D;
-
-  declare type Action = {
+  declare export type RSAAAction = {
     type: string,
-    payload: Object,
+    payload: RSAAPayload,
   };
-
-  declare type State = Object;
-  
-  declare export var RSAAMiddleware : Middleware<State, Action, Dispatch<Action>>;
 
   declare export type RSAAPayload = {
     method?: string,
@@ -34,8 +19,11 @@ declare module 'redux-rsaa-middleware' {
     finishedSendingAction?: RSAAAction,
   };
 
-  declare export type RSAAAction = {
-    type: string,
-    payload: RSAAPayload,
-  };
+  declare export type RSAAState = Object;
+  
+  declare export type DispatchAPI<A> = (action: A) => A;
+  
+  declare export type Dispatch<A: { type: $Subtype<string> }> = DispatchAPI<A>;  
+  
+  declare export var RSAAMiddleware : Middleware<RSAAState, RSAAAction, Dispatch<RSAAAction>>;
 }
